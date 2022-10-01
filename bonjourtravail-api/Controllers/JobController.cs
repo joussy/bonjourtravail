@@ -1,7 +1,7 @@
 ﻿using bonjourtravail_api.Models;
 using bonjourtravail_api.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+using MongoDB.Driver;
 
 namespace bonjourtravail_api.Controllers;
 
@@ -11,19 +11,21 @@ public class JobController : ControllerBase
 {
     private readonly JobService _jobService;
     private readonly IPoleEmploiService _poleEmploiService;
+    private readonly IMongoClient _mongoClient;
 
-    public JobController(JobService jobsService, IPoleEmploiService poleEmploiService)
+    public JobController(JobService jobsService, IPoleEmploiService poleEmploiService, IMongoClient mongoClient)
     {
         _jobService = jobsService;
         _poleEmploiService = poleEmploiService;
+        _mongoClient = mongoClient;
     }
 
     [HttpGet]
-    public async Task<List<Job>> Get() =>
+    public async Task<List<Offre>> Get() =>
         await _jobService.GetAsync();
 
     [HttpGet("{id:length(24)}")]
-    public async Task<ActionResult<Job>> Get(string id)
+    public async Task<ActionResult<Offre>> Get(string id)
     {
         var job = await _jobService.GetAsync(id);
 
@@ -35,17 +37,18 @@ public class JobController : ControllerBase
         return job;
     }
 
-    [HttpGet("pole")]
+    [HttpGet("storeOffers")]
     [Produces(typeof(IEnumerable<Offre>))]
     public async Task<IActionResult> GetPoleEmploi()
     {
         var jobs = await _poleEmploiService.SearchOffers();
+        await _mongoClient.GetDatabase("BonjourTravail").GetCollection<Offre>("Jobs").InsertManyAsync(jobs);
 
         return Ok(jobs);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(Job newJob)
+    public async Task<IActionResult> Post(Offre newJob)
     {
         await _jobService.CreateAsync(newJob);
 
@@ -53,7 +56,7 @@ public class JobController : ControllerBase
     }
 
     [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, Job updatedJob)
+    public async Task<IActionResult> Update(string id, Offre updatedJob)
     {
         var job = await _jobService.GetAsync(id);
 
