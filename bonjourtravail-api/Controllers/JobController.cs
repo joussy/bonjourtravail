@@ -36,9 +36,9 @@ public class JobController : ControllerBase
     }
 
     [HttpGet("pole")]
+    [Produces(typeof(IEnumerable<Offre>))]
     public async Task<IActionResult> GetPoleEmploi()
     {
-        var httpClient = new HttpClient();
         var jobs = await _poleEmploiService.SearchOffers();
 
         return Ok(jobs);

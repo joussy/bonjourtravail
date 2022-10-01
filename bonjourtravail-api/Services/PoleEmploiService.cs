@@ -11,12 +11,14 @@ namespace bonjourtravail_api.Services
         private readonly HttpClient _httpClient;
         private readonly IMemoryCache _memoryCache;
         private readonly PoleEmploiSettings _jobStoreDatabaseSettings;
+        private readonly ILogger _logger;
 
-        public PoleEmploiService(IHttpClientFactory clientFactory, IMemoryCache memoryCache, IOptions<PoleEmploiSettings> jobStoreDatabaseSettings)
+        public PoleEmploiService(IHttpClientFactory clientFactory, IMemoryCache memoryCache, IOptions<PoleEmploiSettings> jobStoreDatabaseSettings, ILogger<PoleEmploiService> logger)
         {
             _httpClient = clientFactory.CreateClient();
             _memoryCache = memoryCache;
             _jobStoreDatabaseSettings = jobStoreDatabaseSettings.Value;
+            _logger = logger;
         }
         private void AddAuthenticationHeader(AuthenticationResponse authenticationResponse)
         {
@@ -58,8 +60,9 @@ namespace bonjourtravail_api.Services
             try
             {
                 var resAsObject = System.Text.Json.JsonSerializer.Deserialize<AuthenticationResponse>(resAsText);
-                _ = _memoryCache.Set(resAsObject, nameof(AuthenticationResponse), TimeSpan.FromSeconds(resAsObject.ExpiresIn));
+                _ = _memoryCache.Set(nameof(AuthenticationResponse), resAsObject, TimeSpan.FromSeconds(resAsObject.ExpiresIn));
                 AddAuthenticationHeader(resAsObject);
+                _logger.LogInformation("PoleEmploi token refreshed");
 
                 return resAsObject;
             }
