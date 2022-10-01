@@ -42,6 +42,8 @@ public class JobController : ControllerBase
     public async Task<IActionResult> GetPoleEmploi()
     {
         var jobs = await _poleEmploiService.SearchOffers();
+        var collection = _mongoClient.GetDatabase("BonjourTravail").GetCollection<Offre>("Jobs");
+        await collection.DeleteManyAsync(x => true);
         await _mongoClient.GetDatabase("BonjourTravail").GetCollection<Offre>("Jobs").InsertManyAsync(jobs);
 
         return Ok(jobs);

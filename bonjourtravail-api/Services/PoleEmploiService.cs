@@ -10,14 +10,16 @@ namespace bonjourtravail_api.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IMemoryCache _memoryCache;
-        private readonly PoleEmploiSettings _jobStoreDatabaseSettings;
+        private readonly PoleEmploiSettings _poleEmploiSettings;
         private readonly ILogger _logger;
+
+        private Uri PoleEmploiUri => new UriBuilder(new bonjourtravail_api.poleemploi_openapiClient(null).BaseUrl).Uri;
 
         public PoleEmploiService(IHttpClientFactory clientFactory, IMemoryCache memoryCache, IOptions<PoleEmploiSettings> jobStoreDatabaseSettings, ILogger<PoleEmploiService> logger)
         {
             _httpClient = clientFactory.CreateClient();
             _memoryCache = memoryCache;
-            _jobStoreDatabaseSettings = jobStoreDatabaseSettings.Value;
+            _poleEmploiSettings = jobStoreDatabaseSettings.Value;
             _logger = logger;
         }
         private void AddAuthenticationHeader(AuthenticationResponse authenticationResponse)
@@ -35,8 +37,8 @@ namespace bonjourtravail_api.Services
                 return value;
             }
 
-            if (string.IsNullOrWhiteSpace(_jobStoreDatabaseSettings.UserId)
-                || string.IsNullOrWhiteSpace(_jobStoreDatabaseSettings.UserSecret))
+            if (string.IsNullOrWhiteSpace(_poleEmploiSettings.UserId)
+                || string.IsNullOrWhiteSpace(_poleEmploiSettings.UserSecret))
             {
                 throw new UnauthorizedAccessException("Missing credentials in project configuration");
             }
@@ -44,12 +46,14 @@ namespace bonjourtravail_api.Services
             var body = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 {"grant_type", "client_credentials"},
-                {"client_id", _jobStoreDatabaseSettings.UserId},
-                {"client_secret", _jobStoreDatabaseSettings.UserSecret},
+                {"client_id", _poleEmploiSettings.UserId},
+                {"client_secret", _poleEmploiSettings.UserSecret},
                 {"scope", string.Join(' ', new[] {"api_offresdemploiv2", "o2dsoffre"})}
             });
+            var uriBuilder = new UriBuilder(_poleEmploiSettings.AuthenticationUrl);
+            uriBuilder.Query += "?realm=%2Fpartenaire";
 
-            var res = await _httpClient.PostAsync("https://entreprise.pole-emploi.fr/connexion/oauth2/access_token?realm=%2Fpartenaire", body);
+            var res = await _httpClient.PostAsync(uriBuilder.Uri, body);
 
             if (!res.IsSuccessStatusCode)
             {
@@ -75,7 +79,7 @@ namespace bonjourtravail_api.Services
         public async Task<IEnumerable<bonjourtravail_api.Offre>?> SearchOffers()
         {
             await Authenticate();
-            var res = await _httpClient.GetAsync("https://api.emploi-store.fr/partenaire/offresdemploi/v2/offres/search");
+            var res = await _httpClient.GetAsync(new UriBuilder(PoleEmploiUri) { Path = PoleEmploiUri.AbsolutePath + "/v2/offres/search" }.Uri);
             var resAsText = await res.Content.ReadAsStringAsync();
             var resAsObject = Newtonsoft.Json.JsonConvert.DeserializeObject<OfferResponse>(resAsText);
             resAsObject.Results = resAsObject.Results.Take(20);

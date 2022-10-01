@@ -18,7 +18,6 @@ builder.Services.AddSingleton<IMongoClient>(c =>
     return mongoClient;
 });
 
-
 builder.Services.Configure<PoleEmploiSettings>(
     builder.Configuration.GetSection("PoleEmploi"));
 
