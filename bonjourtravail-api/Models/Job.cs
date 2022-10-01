@@ -12,9 +12,9 @@ public class Job
     [BsonElement("Name")]
     public string JobName { get; set; } = null!;
 
-    public decimal Price { get; set; }
+    public decimal ContractType { get; set; }
 
-    public string Category { get; set; } = null!;
+    public string Corpotation { get; set; } = null!;
 
-    public string Author { get; set; } = null!;
+    public string Country { get; set; } = null!;
 }

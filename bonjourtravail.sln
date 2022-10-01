@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "bonjourtravail-ui", "bonjourtravail-ui\bonjourtravail-ui.esproj", "{BA19C103-B595-4727-B2F5-F6A7C774613F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bonjourtravail-api", "bonjourtravail-api\bonjourtravail-api.csproj", "{EA9611ED-231C-4F7A-97F5-7D60514EF326}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bonjourtravail-api", "bonjourtravail-api\bonjourtravail-api.csproj", "{EA9611ED-231C-4F7A-97F5-7D60514EF326}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

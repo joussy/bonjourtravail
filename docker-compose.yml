@@ -1,6 +1,14 @@
 version: '3.1'
 
 services:
+  bonjourtravail-api:
+    image: bonjourtravail-api
+    build: bonjourtravail-api
+    restart: always
+    volumes:
+      - ./bonjourtravail-ui/dist/bonjourtravail-ui:/app/wwwroot
+    ports:
+      - 80:80
 
   mongo:
     image: mongo
