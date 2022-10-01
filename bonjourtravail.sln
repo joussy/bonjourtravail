@@ -7,6 +7,11 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "bonjourtravail-ui", "bonjou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bonjourtravail-api", "bonjourtravail-api\bonjourtravail-api.csproj", "{EA9611ED-231C-4F7A-97F5-7D60514EF326}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{05CD2321-D34E-44F5-9A4F-DE86ECA72827}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

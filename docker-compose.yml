@@ -2,11 +2,9 @@ version: '3.1'
 
 services:
   bonjourtravail-api:
-    image: bonjourtravail-api
-    build: bonjourtravail-api
-    restart: always
+    image: mcr.microsoft.com/dotnet/aspnet:6.0
     volumes:
-      - ./bonjourtravail-ui/dist/bonjourtravail-ui:/app/wwwroot
+      - ./bonjourtravail-api/bin/Debug/net6.0/publish:/app
     ports:
       - 80:80
 

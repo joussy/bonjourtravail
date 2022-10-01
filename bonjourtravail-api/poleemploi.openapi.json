@@ -1,0 +1,1451 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Offres d'emploi",
+    "description": "Accédez aux offres d'emploi disponibles sur pole-emploi.fr",
+    "version": "2"
+  },
+  "servers": [
+    {
+      "url": "https://api.emploi-store.fr/partenaire/offresdemploi"
+    }
+  ],
+  "tags": [
+    {
+      "name": "offreREST"
+    },
+    {
+      "name": "referentielREST"
+    }
+  ],
+  "paths": {
+    "/v2/offres/search": {
+      "get": {
+        "tags": [
+          "offreREST"
+        ],
+        "summary": "Recherche des offres selon des criteres.",
+        "operationId": "recupererListeOffre",
+        "parameters": [
+          {
+            "name": "range",
+            "in": "query",
+            "description": "Pagination, format : p-d, où : <ul><li> p est l’index (débutant à 0) du premier élément demandé </li><li> d est l’index de dernier élément demandé </li></ul>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Il est possible de trier les résultats de 3 façons : <ul><li>Pertinence décroissante , distance croissante, date de création horodatée décroissante, origine de l’offre : sort=0 </li><li>Date de création horodatée décroissante, pertinence décroissante, distance croissante, origine de l’offre : sort=1 </li><li>Distance croissante, pertinence décroissante, date de création horodatée décroissante, origine de l’offre : sort=2 </li></ul>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "domaine",
+            "in": "query",
+            "description": "Domaine de l’offre, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "codeROME",
+            "in": "query",
+            "description": "Code ROME de l’offre, voir le référentiel des métiers ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "appellation",
+            "in": "query",
+            "description": "Code appellation ROME de l’offre, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "theme",
+            "in": "query",
+            "description": "Thème ROME du métier, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "secteurActivite",
+            "in": "query",
+            "description": "Code NAF de l’offre, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "experience",
+            "in": "query",
+            "description": "Niveau d’expérience demandé, (1 moins d'un an, 2 de 1 à 3 ans, 3 plus de 3 ans)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "typeContrat",
+            "in": "query",
+            "description": "Code du type de contrat, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "natureContrat",
+            "in": "query",
+            "description": "Code de la nature du contrat, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qualification",
+            "in": "query",
+            "description": "Qualification du poste (0 non-cadre, 9 cadre)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tempsPlein",
+            "in": "query",
+            "description": "Temps plein ou partiel",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "commune",
+            "in": "query",
+            "description": "Code INSEE de la commune, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "distance",
+            "in": "query",
+            "description": "Distance à la commune (pris en compte uniquement si une commune est renseignée, plus d'information dans la documentation)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "departement",
+            "in": "query",
+            "description": "Département de l’offre, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inclureLimitrophes",
+            "in": "query",
+            "description": "Inclure les départements limitrophes dans la recherche",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "description": "Région de l’offre, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paysContinent",
+            "in": "query",
+            "description": "Pays ou continent de l’offre, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "niveauFormation",
+            "in": "query",
+            "description": "Niveau de formation demandé, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "permis",
+            "in": "query",
+            "description": "Permis demandé, voir le référentiel ci-dessous",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "motsCles",
+            "in": "query",
+            "description": "Recherche de mots clés dans l’offre, voir documentation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "salaireMin",
+            "in": "query",
+            "description": "Salaire minimum recherché. Si cette donnée est renseignée, le code du type de salaire minimum est obligatoire.",
+            "schema": {}
+          },
+          {
+            "name": "periodeSalaire",
+            "in": "query",
+            "description": "Période pour le calcul du salaire minimum (M Mensuel, A Annuel, H Horaire, C Cachet). Si cette donnée est renseignée, le salaire minimum est obligatoire.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accesTravailleurHandicape",
+            "in": "query",
+            "description": "Offres pour lesquelles l’employeur est handi friendly",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "publieeDepuis",
+            "in": "query",
+            "description": "Recherche les offres publiées depuis maximum « X » jours",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "minCreationDate",
+            "in": "query",
+            "description": "Date minimale pour laquelle rechercher des offres (format yyyy-MM-dd'T'hh:mm:ss'Z')",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxCreationDate",
+            "in": "query",
+            "description": "Date maximale pour laquelle rechercher des offres (format yyyy-MM-dd'T'hh:mm:ss'Z')",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offresMRS",
+            "in": "query",
+            "description": "Uniquement les offres d'emplois avec méthode de recrutement par simulation proposée",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "experienceExigence",
+            "in": "query",
+            "description": "Exigence d'expérience (D débutant accepté, S expérience souhaitée, E expérience exigée)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "partenaires",
+            "in": "query",
+            "description": "Chaine de caractères - Liste des codes partenaires dont les offres sont à inclure ou exclure en fonction du mode de sélection associé et du filtre de l’origine de l’offre",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "modeSelectionPartenaires",
+            "in": "query",
+            "description": "Énumération (INCLUS ou EXCLU) - Mode de sélection des partenaires.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "L'offre a été recupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Offre"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "API Key - 1": [
+              "api_offresdemploiv2"
+            ]
+          }
+        ],
+        "description": ""
+      }
+    },
+    "/v2/offres/{id}": {
+      "get": {
+        "tags": [
+          "offreREST"
+        ],
+        "summary": "Recherche une offre par son identifiant.",
+        "operationId": "recupererOffre",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "identifiant de l’offre d’emploi",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "L'offre a été recupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Offre"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "L'offre n'existe pas",
+            "content": {}
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/appellations": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des appellations ROME",
+        "operationId": "recupererReferentielAppellations",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : appellations où  <size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/communes": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des communes",
+        "operationId": "recupererReferentielCommunes",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : communes */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Commune"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/continents": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des continents",
+        "operationId": "recupererReferentielContinents",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : continents */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/departements": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des departements",
+        "operationId": "recupererReferentielDepartements",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : departements */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Departement"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/domaines": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des domaines métiers",
+        "operationId": "recupererReferentielDomainesMetiers",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : 0-<d>/<t> : où : <d> est l’index de dernier élément renvoyé <t> est le nombre total d’éléments du référentiel",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/langues": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des langues",
+        "operationId": "recupererReferentielLangues",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : langues */<size> où : <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/metiers": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des métiers ROME",
+        "operationId": "recupererReferentielMetiers",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : metiers */<size> où  <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/naturesContrats": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des natures de contrats",
+        "operationId": "recupererReferentielNaturesContrats",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : naturesContrats */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/niveauxFormations": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des niveaux de formations",
+        "operationId": "recupererReferentielNiveauxFormations",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : niveauxFormations */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/pays": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des pays",
+        "operationId": "recupererReferentielPays",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : pays */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/permis": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des permis",
+        "operationId": "recupererReferentielPermis",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : permis */<size> où :  <unit> est l’unité, ici des bytes <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/regions": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des regions",
+        "operationId": "recupererReferentielRegions",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : regions */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Region"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/secteursActivites": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des secteurs d'activites",
+        "operationId": "recupererReferentielSecteursActivites",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : secteursActivites */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/themes": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des themes",
+        "operationId": "recupererReferentielThemes",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : themes */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/v2/referentiel/typesContrats": {
+      "get": {
+        "tags": [
+          "referentielREST"
+        ],
+        "summary": "Renvoie le referentiel des type de contrats",
+        "operationId": "recupererReferentielTypesContrats",
+        "responses": {
+          "200": {
+            "description": "Le référentiel a été renvoyé avec succès",
+            "headers": {
+              "Content-Range": {
+                "description": "Format : typesContrats */<size> où <size> le nombre d’éléments attendus,  * si inconnu",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referentiel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne au serveur",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Agence": {
+        "type": "object",
+        "properties": {
+          "telephone": {
+            "type": "string",
+            "description": "N° de téléphone de l’agence Pôle Emploi"
+          },
+          "courriel": {
+            "type": "string",
+            "description": "Courriel de l’agence de Pôle Emploi"
+          }
+        },
+        "description": "Agence Pôle Emploi"
+      },
+      "Commune": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code du référentiel"
+          },
+          "libelle": {
+            "type": "string",
+            "description": "Libellé associé au code"
+          },
+          "codePostal": {
+            "type": "string",
+            "description": "Code postal de la commune"
+          },
+          "codeDepartement": {
+            "type": "string",
+            "description": "Code du département de la commune"
+          }
+        },
+        "description": "Commune de l'offre"
+      },
+      "Competence": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code de la compétence"
+          },
+          "libelle": {
+            "type": "string",
+            "description": "Libellé de la compétence"
+          },
+          "exigence": {
+            "type": "string",
+            "description": "E : la compétence est exigée, S : la compétence est souhaitée"
+          }
+        },
+        "description": "Compétence"
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string",
+            "description": "Nom du recruteur"
+          },
+          "coordonnees1": {
+            "type": "string",
+            "description": "Adresse du recruteur"
+          },
+          "coordonnees2": {
+            "type": "string",
+            "description": "Adresse du recruteur"
+          },
+          "coordonnees3": {
+            "type": "string",
+            "description": "Adresse du recruteur"
+          },
+          "telephone": {
+            "type": "string",
+            "description": "N° de téléphone du recruteur"
+          },
+          "courriel": {
+            "type": "string",
+            "description": "Courriel du recruteur"
+          },
+          "commentaire": {
+            "type": "string",
+            "description": "Précision sur le contact de l’offre"
+          },
+          "urlRecruteur": {
+            "type": "string",
+            "description": "URL du recruteur"
+          },
+          "urlPostulation": {
+            "type": "string",
+            "description": "URL du formulaire de postulation"
+          }
+        },
+        "description": "Contact"
+      },
+      "Departement": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code du référentiel"
+          },
+          "libelle": {
+            "type": "string",
+            "description": "Libellé associé au code"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          }
+        },
+        "description": "Département de l'offre"
+      },
+      "Entreprise": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string",
+            "description": "Nom de l’entreprise"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description de l’entreprise"
+          },
+          "logo": {
+            "type": "string",
+            "description": "URL du logo de l’entreprise"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL du site de l’entreprise"
+          }
+        },
+        "description": "Entreprise"
+      },
+      "Formation": {
+        "type": "object",
+        "properties": {
+          "codeFormation": {
+            "type": "string",
+            "description": "Code du domaine de formation souhaité"
+          },
+          "domaineLibelle": {
+            "type": "string",
+            "description": "Domaine de formation souhaité"
+          },
+          "niveauLibelle": {
+            "type": "string",
+            "description": "Niveau de formation souhaité"
+          },
+          "commentaire": {
+            "type": "string",
+            "description": "Commentaire sur la formation"
+          },
+          "exigence": {
+            "type": "string",
+            "description": "E : la formation est exigée, S : la formation est souhaitée"
+          }
+        },
+        "description": "Formation"
+      },
+      "Langue": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "description": "Langue souhaitée"
+          },
+          "exigence": {
+            "type": "string",
+            "description": "E : la langue est exigée, S : la langue est souhaitée"
+          }
+        },
+        "description": "Langue souhaitée"
+      },
+      "LieuTravail": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "description": "Libellé du lieu de travail"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "Latitude du lieu de travail",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Longitude de lieu de travail",
+            "format": "double"
+          },
+          "codePostal": {
+            "type": "string",
+            "description": "Code postal du lieu de travail"
+          },
+          "commune": {
+            "type": "string",
+            "description": "Code Insee du lieu de travail"
+          }
+        },
+        "description": "Lieu de travail"
+      },
+      "MetierCompetence": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "description": "libelle du metier ou competence"
+          },
+          "score": {
+            "type": "number",
+            "description": "score du matching",
+            "format": "float"
+          },
+          "reference": {
+            "type": "string",
+            "description": "reference "
+          },
+          "typeReference": {
+            "type": "string",
+            "description": "type de la recherche"
+          }
+        },
+        "description": "Recherche metier et competence par mots"
+      },
+      "Offre": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifiant de l’offre d’emploi"
+          },
+          "intitule": {
+            "type": "string",
+            "description": "Intitulé de l’offre"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description de l’offre"
+          },
+          "dateCreation": {
+            "type": "string",
+            "description": "Date de création de l’offre",
+            "format": "date-time"
+          },
+          "dateActualisation": {
+            "type": "string",
+            "description": "Date de dernière actualisation de l'offre",
+            "format": "date-time"
+          },
+          "lieuTravail": {
+            "$ref": "#/components/schemas/LieuTravail"
+          },
+          "romeCode": {
+            "type": "string",
+            "description": "Code ROME de l’offre"
+          },
+          "romeLibelle": {
+            "type": "string",
+            "description": "Libellé associé au code ROME"
+          },
+          "appellationlibelle": {
+            "type": "string",
+            "description": "Libellé de l’appellation ROME de l’offre"
+          },
+          "entreprise": {
+            "$ref": "#/components/schemas/Entreprise"
+          },
+          "typeContrat": {
+            "type": "string",
+            "description": "Code du type de contrat proposé (CDD, CDI, etc.)"
+          },
+          "typeContratLibelle": {
+            "type": "string",
+            "description": "Libellé du type de contrat proposé"
+          },
+          "natureContrat": {
+            "type": "string",
+            "description": "Nature du contrat (contrat d’apprentissage, etc.)"
+          },
+          "experienceExige": {
+            "type": "string",
+            "description": "E : l’expérience est exigée, S : l’expérience est souhaitée"
+          },
+          "experienceLibelle": {
+            "type": "string",
+            "description": "Libellé de l’expérience "
+          },
+          "experienceCommentaire": {
+            "type": "string",
+            "description": "Commentaire sur l’expérience"
+          },
+          "formations": {
+            "type": "array",
+            "description": "Formations",
+            "items": {
+              "$ref": "#/components/schemas/Formation"
+            }
+          },
+          "langues": {
+            "type": "array",
+            "description": "Langues",
+            "items": {
+              "$ref": "#/components/schemas/Langue"
+            }
+          },
+          "permis": {
+            "type": "array",
+            "description": "Permis",
+            "items": {
+              "$ref": "#/components/schemas/Permis"
+            }
+          },
+          "outilsBureautiques": {
+            "type": "array",
+            "description": "Liste des outils bureautiques utilisés",
+            "items": {
+              "type": "string"
+            }
+          },
+          "competences": {
+            "type": "array",
+            "description": "Compétences",
+            "items": {
+              "$ref": "#/components/schemas/Competence"
+            }
+          },
+          "salaire": {
+            "$ref": "#/components/schemas/Salaire"
+          },
+          "dureeTravailLibelle": {
+            "type": "string",
+            "description": "Libellé de la durée de travail"
+          },
+          "dureeTravailLibelleConverti": {
+            "type": "string",
+            "description": "Temps plein ou temps partiel"
+          },
+          "complementExercice": {
+            "type": "string",
+            "description": "Complément exercice"
+          },
+          "conditionExercice": {
+            "type": "string",
+            "description": "Valeurs du type « Travail de nuit » ; « travail en hauteur »"
+          },
+          "alternance": {
+            "type": "boolean",
+            "description": "Vrai si c’est une offre pour de l’alternance",
+            "default": false
+          },
+          "contact": {
+            "$ref": "#/components/schemas/Contact"
+          },
+          "agence": {
+            "$ref": "#/components/schemas/Agence"
+          },
+          "nombrePostes": {
+            "type": "integer",
+            "description": "Nombre de postes disponibles pour cette offre",
+            "format": "int32"
+          },
+          "accessibleTH": {
+            "type": "boolean",
+            "description": "Vrai si l’offre est accessible aux travailleurs handicapés",
+            "default": false
+          },
+          "deplacementCode": {
+            "type": "string",
+            "description": "Qualification du poste. Pour la qualification, on remonte les 9 valeurs 1 : manœuvre, ...8 agent de maitrise, 9 cadre"
+          },
+          "deplacementLibelle": {
+            "type": "string",
+            "description": "Description des déplacements demandés"
+          },
+          "qualificationCode": {
+            "type": "string",
+            "description": "Qualification du poste. Pour la qualification, on remonte les 9 valeurs 1 : manœuvre, ... 8 agent de maitrise, 9 cadre"
+          },
+          "qualificationLibelle": {
+            "type": "string",
+            "description": "Libellé de la qualification du poste"
+          },
+          "secteurActivite": {
+            "type": "string",
+            "description": "Code NAF du secteur d’activité"
+          },
+          "secteurActiviteLibelle": {
+            "type": "string",
+            "description": "Secteur d’activité de l’offre"
+          },
+          "qualitesProfessionnelles": {
+            "type": "array",
+            "description": "Qualités professionnelles",
+            "items": {
+              "$ref": "#/components/schemas/QualitePro"
+            }
+          },
+          "trancheEffectifEtab": {
+            "type": "string",
+            "description": "Libellé de la tranche d'effectif de l'etablissement"
+          },
+          "origineOffre": {
+            "$ref": "#/components/schemas/OrigineOffre"
+          }
+        },
+        "description": "Offre d'emploi"
+      },
+      "OrigineOffre": {
+        "type": "object",
+        "properties": {
+          "origine": {
+            "type": "string",
+            "description": "Origine de l’offre"
+          },
+          "urlOrigine": {
+            "type": "string",
+            "description": "URL de l’offre sur les sites des partenaires"
+          },
+          "partenaires": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartenaireOffre"
+            }
+          }
+        },
+        "description": "Origine de l'offre"
+      },
+      "PartenaireOffre": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string",
+            "description": "Nom du partenaire"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL de l’offre sur les sites des partenaires"
+          },
+          "logo": {
+            "type": "string",
+            "description": "URL du logo sur les sites des partenaires"
+          }
+        }
+      },
+      "Permis": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "description": "Permis demandé"
+          },
+          "exigence": {
+            "type": "string",
+            "description": "E : le permis est exigée, S : la permis est souhaitée"
+          }
+        },
+        "description": "Permis"
+      },
+      "QualitePro": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "description": "Libellé de la qualité professionnelle demandée"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description de la qualité professionnelle demandée"
+          }
+        },
+        "description": "Qualité professionnelle"
+      },
+      "Referentiel": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code du référentiel"
+          },
+          "libelle": {
+            "type": "string",
+            "description": "Libellé associé au code"
+          }
+        },
+        "description": "Référentiel"
+      },
+      "Region": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code du référentiel"
+          },
+          "libelle": {
+            "type": "string",
+            "description": "Libellé associé au code"
+          }
+        },
+        "description": "Région de l'offre"
+      },
+      "Salaire": {
+        "type": "object",
+        "properties": {
+          "libelle": {
+            "type": "string",
+            "description": "Libellé du salaire (ex : 31k€ annuel sur 12 mois)"
+          },
+          "commentaire": {
+            "type": "string",
+            "description": "Commentaire sur le salaire"
+          },
+          "complement1": {
+            "type": "string",
+            "description": "Complément 1 de rémunération (prime, véhicule…)"
+          },
+          "complement2": {
+            "type": "string",
+            "description": "Complément 2 de rémunération (prime, véhicule…)"
+          }
+        },
+        "description": "Salaire"
+      }
+    },
+    "securitySchemes": {
+      "API Key - 1": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://entreprise.pole-emploi.fr/connexion/oauth2/access_token",
+            "scopes": {
+              "api_offresdemploiv2": "",
+              "o2dsoffre": ""
+            },
+            "refreshUrl": "https://entreprise.pole-emploi.fr/connexion/oauth2/access_token"
+          }
+        },
+        "description": ""
+      }
+    }
+  },
+  "security": [
+    {
+      "API Key - 1": [
+        "api_offresdemploiv2"
+      ]
+    }
+  ]
+}
