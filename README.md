@@ -1,7 +1,7 @@
 # BonjourTravail
 
 ### Docker
-Edit .env file to provide Pole Emploi API Client credentials, then use docker-compose to start up BonjourTravail
+Edit .env file to provide Pole Emploi API Client credentials, then use docker-compose to start BonjourTravail
 
 `$ docker-compose up`
 
