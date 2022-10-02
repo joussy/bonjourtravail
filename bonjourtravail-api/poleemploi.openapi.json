@@ -901,6 +901,7 @@
     "schemas": {
       "Agence": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "telephone": {
             "type": "string",
@@ -915,6 +916,7 @@
       },
       "Commune": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "code": {
             "type": "string",
@@ -937,6 +939,7 @@
       },
       "Competence": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "code": {
             "type": "string",
@@ -955,6 +958,7 @@
       },
       "Contact": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "nom": {
             "type": "string",
@@ -997,6 +1001,7 @@
       },
       "Departement": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "code": {
             "type": "string",
@@ -1014,6 +1019,7 @@
       },
       "Entreprise": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "nom": {
             "type": "string",
@@ -1036,6 +1042,7 @@
       },
       "Formation": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "codeFormation": {
             "type": "string",
@@ -1062,6 +1069,7 @@
       },
       "Langue": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "libelle": {
             "type": "string",
@@ -1076,6 +1084,7 @@
       },
       "LieuTravail": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "libelle": {
             "type": "string",
@@ -1104,6 +1113,7 @@
       },
       "MetierCompetence": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "libelle": {
             "type": "string",
@@ -1127,6 +1137,7 @@
       },
       "Offre": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "id": {
             "type": "string",
@@ -1310,6 +1321,7 @@
       },
       "OrigineOffre": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "origine": {
             "type": "string",
@@ -1330,6 +1342,7 @@
       },
       "PartenaireOffre": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "nom": {
             "type": "string",
@@ -1347,6 +1360,7 @@
       },
       "Permis": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "libelle": {
             "type": "string",
@@ -1361,6 +1375,7 @@
       },
       "QualitePro": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "libelle": {
             "type": "string",
@@ -1375,6 +1390,7 @@
       },
       "Referentiel": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "code": {
             "type": "string",
@@ -1389,6 +1405,7 @@
       },
       "Region": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "code": {
             "type": "string",
@@ -1403,6 +1420,7 @@
       },
       "Salaire": {
         "type": "object",
+		"additionalProperties": false,
         "properties": {
           "libelle": {
             "type": "string",

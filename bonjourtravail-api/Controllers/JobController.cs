@@ -13,19 +13,18 @@ public class JobController : ControllerBase
     private readonly IPoleEmploiService _poleEmploiService;
     private readonly IMongoClient _mongoClient;
 
-    public JobController(JobService jobsService, IPoleEmploiService poleEmploiService, IMongoClient mongoClient)
+    public JobController(JobService jobsService, IPoleEmploiService poleEmploiService)
     {
         _jobService = jobsService;
         _poleEmploiService = poleEmploiService;
-        _mongoClient = mongoClient;
     }
 
     [HttpGet]
-    public async Task<List<Offre>> Get() =>
+    public async Task<List<Job>> Get() =>
         await _jobService.GetAsync();
 
-    [HttpGet("{id:length(24)}")]
-    public async Task<ActionResult<Offre>> Get(string id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Job>> Get(string id)
     {
         var job = await _jobService.GetAsync(id);
 
@@ -38,27 +37,31 @@ public class JobController : ControllerBase
     }
 
     [HttpGet("storeOffers")]
-    [Produces(typeof(IEnumerable<Offre>))]
+    [Produces(typeof(IEnumerable<Job>))]
     public async Task<IActionResult> GetPoleEmploi()
     {
         var jobs = await _poleEmploiService.SearchOffers();
-        var collection = _mongoClient.GetDatabase("BonjourTravail").GetCollection<Offre>("Jobs");
-        await collection.DeleteManyAsync(x => true);
-        await _mongoClient.GetDatabase("BonjourTravail").GetCollection<Offre>("Jobs").InsertManyAsync(jobs);
+        await _jobService.DeleteManyAsync(x => !x.Internal);
+        await _jobService.InsertManyAsync(jobs);
 
         return Ok(jobs);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(Offre newJob)
+    public async Task<IActionResult> Post(Job newJob)
     {
-        await _jobService.CreateAsync(newJob);
+        if (newJob?.Id == null)
+        {
+            return BadRequest("ID is required");
+        }
+
+        await _jobService.InsertAsync(newJob);
 
         return CreatedAtAction(nameof(Get), new { id = newJob.Id }, newJob);
     }
 
-    [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, Offre updatedJob)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(string id, Job updatedJob)
     {
         var job = await _jobService.GetAsync(id);
 
@@ -74,7 +77,7 @@ public class JobController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         var job = await _jobService.GetAsync(id);
@@ -84,7 +87,7 @@ public class JobController : ControllerBase
             return NotFound();
         }
 
-        await _jobService.RemoveAsync(id);
+        await _jobService.DeleteAsync(id);
 
         return NoContent();
     }

@@ -13,7 +13,7 @@ namespace bonjourtravail_api.Services
         private readonly PoleEmploiSettings _poleEmploiSettings;
         private readonly ILogger _logger;
 
-        private Uri PoleEmploiUri => new UriBuilder(new bonjourtravail_api.poleemploi_openapiClient(null).BaseUrl).Uri;
+        private static Uri PoleEmploiUri => new UriBuilder(new poleemploi_openapiClient(null).BaseUrl).Uri;
 
         public PoleEmploiService(IHttpClientFactory clientFactory, IMemoryCache memoryCache, IOptions<PoleEmploiSettings> jobStoreDatabaseSettings, ILogger<PoleEmploiService> logger)
         {
@@ -48,7 +48,7 @@ namespace bonjourtravail_api.Services
                 {"grant_type", "client_credentials"},
                 {"client_id", _poleEmploiSettings.UserId},
                 {"client_secret", _poleEmploiSettings.UserSecret},
-                {"scope", string.Join(' ', new[] {"api_offresdemploiv2", "o2dsoffre"})}
+                {"scope", string.Join(' ', new[] { "api_offresdemploiv2", "o2dsoffre"})}
             });
             var uriBuilder = new UriBuilder(_poleEmploiSettings.AuthenticationUrl);
             uriBuilder.Query += "?realm=%2Fpartenaire";
@@ -76,10 +76,16 @@ namespace bonjourtravail_api.Services
             }
         }
 
-        public async Task<IEnumerable<bonjourtravail_api.Offre>?> SearchOffers()
+        public async Task<IEnumerable<Job>?> SearchOffers()
         {
             await Authenticate();
             var res = await _httpClient.GetAsync(new UriBuilder(PoleEmploiUri) { Path = PoleEmploiUri.AbsolutePath + "/v2/offres/search" }.Uri);
+
+            if (!res.IsSuccessStatusCode)
+            {
+                throw new UnauthorizedAccessException("PoleEmploi API query failure");
+            }
+
             var resAsText = await res.Content.ReadAsStringAsync();
             var resAsObject = Newtonsoft.Json.JsonConvert.DeserializeObject<OfferResponse>(resAsText);
             resAsObject.Results = resAsObject.Results.Take(20);

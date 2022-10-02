@@ -1,12 +1,13 @@
 ﻿using bonjourtravail_api.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Linq.Expressions;
 
 namespace bonjourtravail_api.Services;
 
 public class JobService
 {
-    private readonly IMongoCollection<Offre> _jobCollection;
+    private readonly IMongoCollection<Job> _jobCollection;
 
     public JobService(
         IOptions<Settings.MongoDatabaseSettings> jobStoreDatabaseSettings)
@@ -17,22 +18,27 @@ public class JobService
         var mongoDatabase = mongoClient.GetDatabase(
             jobStoreDatabaseSettings.Value.DatabaseName);
 
-        _jobCollection = mongoDatabase.GetCollection<Offre>(
+        _jobCollection = mongoDatabase.GetCollection<Job>(
             jobStoreDatabaseSettings.Value.JobCollectionName);
     }
 
-    public async Task<List<Offre>> GetAsync() =>
+    public async Task<List<Job>> GetAsync() =>
         await _jobCollection.Find(_ => true).ToListAsync();
 
-    public async Task<Offre?> GetAsync(string id) =>
-        await _jobCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+    public async Task<Job?> GetAsync(string id) =>
+        await _jobCollection.Find(x => id.Equals(x.Id)).FirstOrDefaultAsync();
 
-    public async Task CreateAsync(Offre newJob) =>
+    public async Task InsertAsync(Job newJob) =>
         await _jobCollection.InsertOneAsync(newJob);
+    public async Task InsertManyAsync(IEnumerable<Job> newJob) =>
+        await _jobCollection.InsertManyAsync(newJob);
 
-    public async Task UpdateAsync(string id, Offre updatedJob) =>
-        await _jobCollection.ReplaceOneAsync(x => x.Id == id, updatedJob);
+    public async Task UpdateAsync(string id, Job updatedJob) =>
+        await _jobCollection.ReplaceOneAsync(x => id.Equals(x.Id), updatedJob);
 
-    public async Task RemoveAsync(string id) =>
-        await _jobCollection.DeleteOneAsync(x => x.Id == id);
+    public async Task DeleteAsync(string id) =>
+        await _jobCollection.DeleteOneAsync(x => id.Equals(x.Id));
+
+    public async Task DeleteManyAsync(Expression<Func<Job, bool>> filter) =>
+    await _jobCollection.DeleteManyAsync(filter);
 }

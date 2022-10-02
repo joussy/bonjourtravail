@@ -4,6 +4,6 @@ namespace bonjourtravail_api.Services
 {
     public interface IPoleEmploiService
     {
-        Task<IEnumerable<Offre>?> SearchOffers();
+        Task<IEnumerable<Job>?> SearchOffers();
     }
 }

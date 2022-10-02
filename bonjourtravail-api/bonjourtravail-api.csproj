@@ -23,9 +23,6 @@
   </ItemGroup>
   <ItemGroup>
 	  <OpenApiReference Include="poleemploi.openapi.json">
-		  <OpenApiGenerateCodeOptions>
-			  <GenerateOptionalPropertiesAsNullable>true</GenerateOptionalPropertiesAsNullable>
-		  </OpenApiGenerateCodeOptions>
 	  </OpenApiReference>
   </ItemGroup>
 </Project>
