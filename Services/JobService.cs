@@ -33,9 +33,6 @@ public class JobService : IJobService
     public async Task InsertManyAsync(IEnumerable<Job> newJob) =>
         await _jobCollection.InsertManyAsync(newJob);
 
-    public async Task UpdateAsync(string id, Job updatedJob) =>
-        await _jobCollection.ReplaceOneAsync(x => id.Equals(x.Id), updatedJob);
-
     public async Task DeleteAsync(string id) =>
         await _jobCollection.DeleteOneAsync(x => id.Equals(x.Id));
 

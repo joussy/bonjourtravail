@@ -11,6 +11,5 @@ namespace bonjourtravail_api.Services
         Task<Job?> GetAsync(string id);
         Task InsertAsync(Job newJob);
         Task InsertManyAsync(IEnumerable<Job> newJob);
-        Task UpdateAsync(string id, Job updatedJob);
     }
 }

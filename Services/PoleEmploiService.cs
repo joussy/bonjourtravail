@@ -2,7 +2,6 @@
 using bonjourtravail_api.Settings;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using System.Net.Http;
 
 namespace bonjourtravail_api.Services
 {

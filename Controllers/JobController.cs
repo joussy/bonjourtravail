@@ -1,7 +1,6 @@
 ﻿using bonjourtravail_api.Models;
 using bonjourtravail_api.Services;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 
 namespace bonjourtravail_api.Controllers;
 
@@ -11,7 +10,6 @@ public class JobController : ControllerBase
 {
     private readonly IJobService _jobService;
     private readonly IPoleEmploiService _poleEmploiService;
-    private readonly IMongoClient _mongoClient;
 
     public JobController(IJobService jobsService, IPoleEmploiService poleEmploiService)
     {
@@ -19,10 +17,17 @@ public class JobController : ControllerBase
         _poleEmploiService = poleEmploiService;
     }
 
+    /// <summary>
+    /// Retourne la totalité des offres d'emploi stockées en BDD
+    /// </summary>
     [HttpGet]
     public async Task<List<Job>> Get() =>
         await _jobService.GetAsync();
 
+    /// <summary>
+    /// Retourne une offre d'emploi
+    /// </summary>
+    /// <param name="id">Identifiant unique de l'offre d'emploi</param>
     [HttpGet("{id}")]
     public async Task<ActionResult<Job>> Get(string id)
     {
@@ -36,7 +41,10 @@ public class JobController : ControllerBase
         return job;
     }
 
-    [HttpGet("storeOffers")]
+    /// <summary>
+    /// Met a jour la BDD avec la totalité des offres provenant de Pole-Emploi
+    /// </summary>
+    [HttpGet("fetchPoleEmploi")]
     [Produces(typeof(IEnumerable<Job>))]
     public async Task<IActionResult> GetPoleEmploi()
     {
@@ -47,6 +55,9 @@ public class JobController : ControllerBase
         return Ok(jobs);
     }
 
+    /// <summary>
+    /// Ajoute une offre d'emploi
+    /// </summary>
     [HttpPost]
     public async Task<IActionResult> Post(Job newJob)
     {
@@ -60,23 +71,10 @@ public class JobController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newJob.Id }, newJob);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, Job updatedJob)
-    {
-        var job = await _jobService.GetAsync(id);
-
-        if (job is null)
-        {
-            return NotFound();
-        }
-
-        updatedJob.Id = job.Id;
-
-        await _jobService.UpdateAsync(id, updatedJob);
-
-        return NoContent();
-    }
-
+    /// <summary>
+    /// Supprime une offre d'emploi
+    /// </summary>
+    /// <param name="id">Identifiant unique de l'offre d'emploi</param>
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
