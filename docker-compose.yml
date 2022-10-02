@@ -2,17 +2,17 @@ version: '3.1'
 
 services:
   bonjourtravail-api:
-    image: mcr.microsoft.com/dotnet/aspnet:6.0
-    volumes:
-      - ./bonjourtravail-api/bin/Debug/net6.0/publish:/app
+    build: .
     ports:
       - 80:80
+    environment:
+      PoleEmploi__userId: ${POLE_EMPLOI_USER_ID}
+      PoleEmploi__userSecret: ${POLE_EMPLOI_USER_SECRET}
+      MongoDatabase__ConnectionString: mongodb://root:example@mongo:27017
 
   mongo:
     image: mongo
     restart: always
-    ports:
-      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example

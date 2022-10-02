@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace bonjourtravail_api.Services;
 
-public class JobService
+public class JobService : IJobService
 {
     private readonly IMongoCollection<Job> _jobCollection;
 

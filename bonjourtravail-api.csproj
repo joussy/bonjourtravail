@@ -17,11 +17,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\bonjourtravail-ui\bonjourtravail-ui.esproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
 	  <OpenApiReference Include="poleemploi.openapi.json">
 	  </OpenApiReference>
   </ItemGroup>

@@ -9,11 +9,11 @@ namespace bonjourtravail_api.Controllers;
 [Route("[controller]")]
 public class JobController : ControllerBase
 {
-    private readonly JobService _jobService;
+    private readonly IJobService _jobService;
     private readonly IPoleEmploiService _poleEmploiService;
     private readonly IMongoClient _mongoClient;
 
-    public JobController(JobService jobsService, IPoleEmploiService poleEmploiService)
+    public JobController(IJobService jobsService, IPoleEmploiService poleEmploiService)
     {
         _jobService = jobsService;
         _poleEmploiService = poleEmploiService;
